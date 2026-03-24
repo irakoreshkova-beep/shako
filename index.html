@@ -3,13 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#f15422">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="manifest" href="./manifest.webmanifest">
-<link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="192x192" href="./assets/icon-192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="./assets/icon-512.png">
 <title>Freddie & Elon</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -132,6 +127,7 @@ button:active{transform:scale(.96)}
 <div id="hE"></div>
 <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px"><span id="hC" style="font-size:14px;color:#aaa;font-weight:700"></span><button class="sb sb-rs" onclick="resetH()" style="background:#e5e4dd;color:#aaa;padding:8px 20px;font-size:13px">გასუფთავება</button></div>
 <div class="pb"><div class="pbf" id="pF"></div></div>
+<div id="hR" style="margin-top:14px"></div>
 <div id="tr" class="hidden" style="text-align:center;margin-top:20px;padding:28px;background:#fff;border-radius:24px;box-shadow:0 2px 12px rgba(0,0,0,.06)"><div style="font-size:44px;animation:pop .5s ease">🏆</div><div style="font-size:20px;font-weight:800;margin-top:8px">ყველაფერი მონიშნულია!</div></div>
 </div>
 
@@ -280,6 +276,17 @@ var HA=[
 {id:"sleep",lb:"🌙 დაძინება 01:00-მდე",d:false}
 ];
 
+var HR=[
+{w:"f",t:"Good, darling. პატარა რამეები სულაც არ არის პატარა, როცა ყოველდღე გიმეორებია."},
+{w:"e",t:"ერთი checkbox არ ცვლის ცხოვრებას. მაგრამ trajectory-ს ცვლის. ეს საკმარისია."},
+{w:"f",t:"ასე უნდა, baby. არა იდეალურად, უბრალოდ გულწრფელად."},
+{w:"e",t:"Micro-win დაფიქსირდა. სისტემას უკვე უფრო კარგი დღე აქვს, ვიდრე ერთი საათის წინ."},
+{w:"f",t:"ხედავ? შენგან grand gesture არც ყოფილა საჭირო, darling."},
+{w:"e",t:"Consistency beats drama. ეს პატარა ქცევა მომავალს უფრო წყნარად აწყობს."},
+{w:"f",t:"Lovely. ადამიანს საკუთარ თავთან ასეთი პატარა ერთგულებებიც ძალიან უხდება."},
+{w:"e",t:"Data says: შენ ახლახან დღევანდელი ვერსია ოდნავ გააუმჯობესე."}
+];
+
 var MI=[
 {d:0,l:"ახლავე",ds:"20 წუთში პულსი ნორმისკენ ბრუნდება და სისხლის მიმოქცევა უმჯობესდება.",i:"⏱️"},
 {d:1,l:"24 საათი",ds:"სისხლში CO ნორმას უახლოვდება და ჟანგბადი უკეთ მიეწოდება ქსოვილებს.",i:"💨"},
@@ -293,8 +300,11 @@ var MI=[
 {d:365,l:"1 წელი",ds:"გული ბევრად უფრო დაცულ მდგომარეობაშია.",i:"⭐"}
 ];
 
-var dy=0,sm=null;
+var dy=0,sm=null,hr=null;
+var hk='fe_habits',rk='fe_hreact',qk='fe_hqueue';
 var sk='fe_sm';var sv=localStorage.getItem(sk);if(sv)sm=parseInt(sv,10);
+var hv=localStorage.getItem(hk);if(hv){try{JSON.parse(hv).forEach(function(v,i){if(HA[i])HA[i].d=!!v})}catch(e){}}
+var rv=localStorage.getItem(rk);if(rv){try{hr=JSON.parse(rv)}catch(e){}}
 var tI=["d","h","s"],tL=["დღეები","ჩვევები","თაიმერი"];
 var startDate=new Date(2026,2,25);
 var oneDay=864e5;
@@ -313,6 +323,34 @@ var d=document.createElement('div');
 d.className='spk '+(f?'spk-f':'spk-e');
 d.innerHTML='<div class="spk-hdr"><div class="spk-img"><img src="'+(f?FI:EI)+'"></div><div class="spk-nm '+(f?'spk-nm-f':'spk-nm-e')+'">'+(f?'Freddie Mercury':'Elon Musk')+'</div></div><div class="spk-txt">'+ln.t+'</div>';
 return d;
+}
+
+function svH(){localStorage.setItem(hk,JSON.stringify(HA.map(function(h){return !!h.d})))}
+function shf(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function nxHR(){
+var q;
+try{q=JSON.parse(localStorage.getItem(qk)||'[]')}catch(e){q=[]}
+if(!q.length){
+q=shf(HR.map(function(_,i){return i}));
+if(hr&&q.length>1&&q[0]===hr.i){var t=q[0];q[0]=q[1];q[1]=t}
+}
+var idx=q.shift();
+localStorage.setItem(qk,JSON.stringify(q));
+hr={i:idx,w:HR[idx].w,t:HR[idx].t};
+localStorage.setItem(rk,JSON.stringify(hr));
+}
+function rHR(){
+var e=document.getElementById('hR');
+if(!e)return;
+e.innerHTML='';
+if(!hr){
+var c=document.createElement('div');
+c.className='icard';
+c.innerHTML='<div class="itxt">გალოჩვის შემდეგ Freddie ან Elon რაღაცას აუცილებლად გეტყვის.</div>';
+e.appendChild(c);
+return;
+}
+e.appendChild(mkS(hr));
 }
 
 function renderLocked(){
@@ -346,8 +384,8 @@ setNavState(last);
 }
 window.chDay=function(dir){var last=lastUnlockedIndex();if(last<0)return;var n=dy+dir;if(n>=0&&n<=last){dy=n;rD()}};
 
-function rH(){var e=document.getElementById('hE');e.innerHTML='';var c=0;HA.forEach(function(h,i){var d=document.createElement('div');d.className='hab'+(h.d?' dn':'');d.innerHTML='<div class="hab-c">'+(h.d?'✓':'')+'</div><div class="hab-l">'+h.lb+'</div>';d.onclick=function(){HA[i].d=!HA[i].d;rH()};e.appendChild(d);if(h.d)c++});document.getElementById('hC').textContent=c+'/'+HA.length;document.getElementById('pF').style.width=(c/HA.length*100)+'%';document.getElementById('tr').classList.toggle('hidden',c<HA.length)}
-window.resetH=function(){HA.forEach(function(h){h.d=false});rH()};
+function rH(){var e=document.getElementById('hE');e.innerHTML='';var c=0;HA.forEach(function(h,i){var d=document.createElement('div');d.className='hab'+(h.d?' dn':'');d.innerHTML='<div class="hab-c">'+(h.d?'✓':'')+'</div><div class="hab-l">'+h.lb+'</div>';d.onclick=function(){HA[i].d=!HA[i].d;svH();nxHR();rH()};e.appendChild(d);if(h.d)c++});document.getElementById('hC').textContent=c+'/'+HA.length;document.getElementById('pF').style.width=(c/HA.length*100)+'%';document.getElementById('tr').classList.toggle('hidden',c<HA.length);rHR()}
+window.resetH=function(){HA.forEach(function(h){h.d=false});svH();hr=null;localStorage.removeItem(rk);localStorage.removeItem(qk);rH()};
 
 function sD(){return sm?Math.max(0,Math.floor((Date.now()-sm)/oneDay)):0}
 function rS(){var d=sD();document.getElementById('sN').textContent=d;document.getElementById('sM').textContent=d===0?'':d<3?'ყველაზე რთული ნაწილი ახლაა. მერე გამარტივდება.':d<7?'ნიკოტინი უკვე გასულია.':d<30?'სხეული ნელ-ნელა იბრუნებს თავის რიტმს.':'სხვა ადამიანი ხარ.';var e=document.getElementById('mE');e.innerHTML='';MI.forEach(function(m){var v=document.createElement('div');v.className='ml'+(d>=m.d?' dn':'');v.innerHTML='<span class="ml-i">'+(d>=m.d?'✅':m.i)+'</span><div><div class="ml-t">'+m.l+'</div><div class="ml-d">'+m.ds+'</div></div>';e.appendChild(v)})}
